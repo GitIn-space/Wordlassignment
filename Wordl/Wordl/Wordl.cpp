@@ -11,6 +11,26 @@ Wordl::~Wordl()
 
 }
 
+bool Wordl::Input(std::string& output)
+{
+	if (std::cin >> output)
+	{
+		std::for_each(output.begin(), output.end(), [](char& c)
+			{
+				c = ::toupper(c);
+			});
+		return true;
+	}
+	else
+	{
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+		std::cout << "cin borked, resetting" << std::endl;
+	}
+	return false;
+}
+
 void Wordl::Start()
 {
 	using namespace std;
@@ -26,9 +46,7 @@ void Wordl::Start()
 		string guess{ "" };
 		string word{ lib->NewWord() };
 
-		cout << endl << word << endl;
-
-		while (guessing)
+		while (guessing && ((ATTEMPTS - tries) > 0))
 		{
 			cout << endl;
 			for (string each : guesses)
@@ -36,33 +54,67 @@ void Wordl::Start()
 
 			cout << endl << "Guesses remaining: " << 6 - tries << "/6" << endl;
 
-			if (cin >> guess)
+			if (Input(guess))
 			{
-				if (lib->Contains(guess))
+				if(guess.length() == WORDLENGTH)
 				{
-					char* output{};
-					for (int c = 0; c < guess.size(); c++)
+					if (lib->Contains(guess))
 					{
-						if (toupper(guess[c]) == word[c])
-							cout << BACKGROUND(BackgroundColor::Green, guess[c]);
-						else if (word.find(toupper(guess[c])) != string::npos)
-							cout << BACKGROUND(BackgroundColor::Yellow, guess[c]);
-						else
-							cout << guess[c];
+						string output{ "" };
+						stringstream ss{};
+						for (unsigned int c = 0; c < guess.size(); c++)
+						{
+							if (guess[c] == word[c])
+							{
+								ss << BACKGROUND(BackgroundColor::Green, guess[c]);
+							}
+							else if (word.find(guess[c]) != string::npos)
+							{
+								ss << BACKGROUND(BackgroundColor::Yellow, guess[c]);
+							}
+							else
+							{
+								ss << BACKGROUND(BackgroundColor::Grey, guess[c]);
+							}
+						}
+						guesses.push_back(ss.str());
+						tries++;
+
+						if (!guess.compare(word))
+							guessing = false;
 					}
-					cout << endl;
-					tries++;
+					else
+						cout << "Invalid word, doesn't exist in the list. Try again" << endl;
 				}
 				else
-					cout << "Invalid word, doesn't exist in the list. Try again" << endl;
+					cout << "Invalid length of word, five letters please" << endl;
 			}
-			else
-			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
 
-				cout << "cin borked, resetting" << endl;
-			}
+		cout << endl;
+		for (string each : guesses)
+			cout << each << endl;
+
+		if (!guess.compare(word))
+			cout << "Congratulations, you found the right word in only " << tries << " attempts. Play again? y/n" << endl;
+		else
+			cout << "Sorry, you ran out of attempts. The word was: " << word << ". Play again ? y / n" << endl;
+
+		while (true)
+		{
+			if (Input(guess))
+				if (!guess.compare("N"))
+				{
+					playing = false;
+					break;
+				}
+				else if (!guess.compare("Y"))
+				{
+					guessing = true;
+					break;
+				}
+				else
+					cout << "Invalid choice: y / n" << endl;
 		}
 	}
 }

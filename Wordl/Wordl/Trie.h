@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define CHAR_SIZE 26
+#define CHAR_SIZE 128
 
 class Trie
 {
