@@ -15,10 +15,16 @@ bool Wordl::Input(std::string& output)
 {
 	if (std::cin >> output)
 	{
-		std::for_each(output.begin(), output.end(), [](char& c)
+		for(char& each : output)
+				each = toupper(each);
+
+		for (char each : output)
+			if (each < 'A' || each > 'Z')
 			{
-				c = ::toupper(c);
-			});
+				std::cout << "Contains non-alpha characters" << std::endl;
+				return false;
+			}
+
 		return true;
 	}
 	else
@@ -40,13 +46,13 @@ void Wordl::Start()
 	cout << "Welcome to the Wordl-look-alike assignment. Try to guess the word within the try limit" << endl;
 	while (playing)
 	{
-		bool guessing{ true };
+		bool inGame{ true };
 		int tries{ 0 };
 		guesses.clear();
-		string guess{ "" };
+		string input{ "" };
 		string word{ lib->NewWord() };
 
-		while (guessing && ((ATTEMPTS - tries) > 0))
+		while (inGame && ((ATTEMPTS - tries) > 0))
 		{
 			cout << endl;
 			for (string each : guesses)
@@ -54,34 +60,34 @@ void Wordl::Start()
 
 			cout << endl << "Guesses remaining: " << 6 - tries << "/6" << endl;
 
-			if (Input(guess))
+			if (Input(input))
 			{
-				if(guess.length() == WORDLENGTH)
+				if(input.length() == WORDLENGTH)
 				{
-					if (lib->Contains(guess))
+					if (lib->Contains(input))
 					{
 						string output{ "" };
 						stringstream ss{};
-						for (unsigned int c = 0; c < guess.size(); c++)
+						for (unsigned int c = 0; c < input.size(); c++)
 						{
-							if (guess[c] == word[c])
+							if (input[c] == word[c])
 							{
-								ss << BACKGROUND(BackgroundColor::Green, guess[c]);
+								ss << BACKGROUND(BackgroundColor::Green, input[c]);
 							}
-							else if (word.find(guess[c]) != string::npos)
+							else if (word.find(input[c]) != string::npos)
 							{
-								ss << BACKGROUND(BackgroundColor::Yellow, guess[c]);
+								ss << BACKGROUND(BackgroundColor::Yellow, input[c]);
 							}
 							else
 							{
-								ss << BACKGROUND(BackgroundColor::Grey, guess[c]);
+								ss << BACKGROUND(BackgroundColor::Grey, input[c]);
 							}
 						}
 						guesses.push_back(ss.str());
 						tries++;
 
-						if (!guess.compare(word))
-							guessing = false;
+						if (!input.compare(word))
+							inGame = false;
 					}
 					else
 						cout << "Invalid word, doesn't exist in the list. Try again" << endl;
@@ -95,22 +101,22 @@ void Wordl::Start()
 		for (string each : guesses)
 			cout << each << endl;
 
-		if (!guess.compare(word))
+		if (!input.compare(word))
 			cout << "Congratulations, you found the right word in only " << tries << " attempts. Play again? y/n" << endl;
 		else
 			cout << "Sorry, you ran out of attempts. The word was: " << word << ". Play again ? y / n" << endl;
 
 		while (true)
 		{
-			if (Input(guess))
-				if (!guess.compare("N"))
+			if (Input(input))
+				if (!input.compare("N"))
 				{
 					playing = false;
 					break;
 				}
-				else if (!guess.compare("Y"))
+				else if (!input.compare("Y"))
 				{
-					guessing = true;
+					inGame = true;
 					break;
 				}
 				else
