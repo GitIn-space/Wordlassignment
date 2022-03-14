@@ -1,5 +1,5 @@
 Custom container for words: Trie
 Tried first to imagine something myself, ended up with something along the lines of array blocks indexed by each letter and that way seeing if a word was legal.
 After that I searched the Internet to see if there were any actual structures made for this kind of problem, and I found the Trie structure which seemed made for storing large amounts of words while keeping it fast to search through them. The structure is somewhat similar to what I first imagined as well, but instead of just using the letters objects were used in a fairly clever way.
-Time complexity of O(k) along with a somewhat good memory model made me try it over Radix or some completely custom variant. Since the assignment also only requires string handling it seemed like a good structure since it specializes in managing strings.
+Time complexity of O(k) along with a somewhat good memory model made me try it over Radix or some completely custom variant. Since the assignment also only requires string handling it seemed like a good structure since it specializes in managing strings. It seems like a common use case for Tries are spell checking and autocomplete.
 As an aside, it was also something I hadn't seen before so was curious to try it out.
