@@ -2,8 +2,9 @@
 
 Wordl::Wordl()
 {
-	lib = new WordLib();
-	guesses = std::vector<std::string>();
+	lib = new WordLib(); // feedback: could not find where this is being deleted. Seems like a memory leak as well.
+	guesses = std::vector<std::string>(); // feedback: you don't really need to explicitly call a constructor like this. The class member
+											// will be default-created when possible if it is a value-type memeber(not a pointer or ref)
 }
 
 Wordl::~Wordl()
@@ -18,7 +19,7 @@ bool Wordl::Input(std::string& output)
 		for(char& each : output)
 				each = toupper(each);
 
-		for (char each : output)
+		for (char each : output) // feedback: style: inconsistent usage or reference and value type in the loop here and above. I'd stick to ref
 			if (each < 'A' || each > 'Z')
 			{
 				std::cout << "Contains non-alpha characters" << std::endl;

@@ -28,3 +28,5 @@ int main()
 
     std::cout << BACKGROUND(BackgroundColor::Yellow, "AB") << BACKGROUND(BackgroundColor::Green, "C") << BACKGROUND(BackgroundColor::Red, "DE") << std::endl;
 }*/
+
+// feedback: whole file commented out.. Would be nice to remove it from the final commit.

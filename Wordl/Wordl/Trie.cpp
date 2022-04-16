@@ -39,6 +39,9 @@ bool Trie::Contains(std::string key)
     return current->isLeaf;
 }
 
+// feedback: a lot of commented-out code. Some of it seem to be useful, as deletetion of allocated memory for example.
+// I could not find any other place where the deletion is done, so it looks like memory allocated with  new Trie() is never released.
+
 /*bool Trie::HaveChildren(Trie const* current)
 {
     for (int c = 0; c < CHAR_SIZE; c++)
