@@ -31,7 +31,8 @@ bool WordLib::Contains(std::string word)
 std::string WordLib::NewWord()
 {
 	std::ifstream file;
-	file.open("../words.txt");
+	file.open("../words.txt"); //feedback: file reading is an expensive operation. Considering you read the file once in the constructor of this class
+								// I'd prefer to see storing of the file contents in memory and not reading the file again when you need a particular line.
 
 	std::string line{ "" };
 	int c{ 0 };

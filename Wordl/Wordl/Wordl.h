@@ -14,7 +14,7 @@ class Wordl
 
 public:
 	Wordl();
-	~Wordl();
+	~Wordl(); // feedback: empty destructor
 	void Start();
 
 private:

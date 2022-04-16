@@ -11,7 +11,7 @@ public:
 
     Trie();
 
-    void Insert(std::string);
+    void Insert(std::string); // feedback: arguments of these functions could be string references to avoid string copy
     bool Contains(std::string);
     
     /*bool HaveChildren(Trie const*);
